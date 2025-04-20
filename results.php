@@ -19,127 +19,56 @@ $maxScore = $results[0]['score'];
 $winners = array_filter($results, function ($result) use ($maxScore) {
     return $result['score'] == $maxScore;
 });
+
+// Determine if there's a tie between the first and second players
+$isTie = isset($results[1]) && $results[0]['score'] == $results[1]['score'];
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <link href="style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="resultstyles.css" rel="stylesheet" type="text/css" media="all"/>
     <link rel="shortcut icon" href="favicon.ico" type="image/png" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+</head>
     <title>Game Results</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2b2b2b;
-            color: #f5f5f5;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            color: #ffd700;
-            margin-top: 20px;
-        }
-
-        .pedestal-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 20px;
-            margin-top: 50px;
-        }
-
-        .pedestal {
-            background-color: #333333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            color: #f5f5f5;
-        }
-
-        .pedestal.winner {
-            background-color: #ffd700;
-            color: #333333;
-            font-weight: bold;
-        }
-
-        .pedestal.second {
-            height: 150px;
-        }
-
-        .pedestal.first {
-            height: 200px;
-        }
-
-        .pedestal.third {
-            height: 100px;
-        }
-
-        .pedestal img {
-            width: 50px;
-            height: 50px;
-            margin: 5px;
-        }
-
-        .new-game-button {
-            background-color: #ff4500;
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 30px;
-        }
-
-        .new-game-button:hover {
-            background-color: #e63900;
-        }
-    </style>
 </head>
 <body>
-    <h1>Game Results</h1>
-    <div class="pedestal-container">
-        <?php if (isset($results[1])): ?>
-            <div class="pedestal second">
-                <h2>2nd Place</h2>
-                <p><?php echo $results[1]['user']['name']; ?></p>
-                <p>Score: <?php echo $results[1]['score']; ?></p>
-                <div>
-                    <?php foreach ($results[1]['dice'] as $roll): ?>
-                        <img src="http://193.2.139.22/dice/dice<?php echo $roll; ?>.gif" alt="Dice <?php echo $roll; ?>">
-                    <?php endforeach; ?>
-                </div>
+    <header id="header">
+        <h1>🎲Game Results🎲</h1>
+    </header>
+    <div class="podium-container">
+        <?php if (isset($results[0])): ?>
+            <div class="player-position first-place">
+                <img src="http://193.2.139.22/dice/dice1.gif" alt="First Place">
+                <p class="name" id="first-name"><?php echo $results[0]['user']['name']; ?></p>
+                <p class="score" id="first-score">Score: <?php echo $results[0]['score']; ?></p>
             </div>
         <?php endif; ?>
 
-        <?php if (isset($results[0])): ?>
-            <div class="pedestal winner first">
-                <h2>1st Place</h2>
-                <p><?php echo $results[0]['user']['name']; ?></p>
-                <p>Score: <?php echo $results[0]['score']; ?></p>
-                <div>
-                    <?php foreach ($results[0]['dice'] as $roll): ?>
-                        <img src="http://193.2.139.22/dice/dice<?php echo $roll; ?>.gif" alt="Dice <?php echo $roll; ?>">
-                    <?php endforeach; ?>
-                </div>
+        <?php if (isset($results[1])): ?>
+            <div class="player-position second-place">
+                <img src="http://193.2.139.22/dice/<?php echo $isTie ? 'dice1.gif' : 'dice2.gif'; ?>" alt="Second Place">
+                <p class="name"><?php echo $results[1]['user']['name']; ?></p>
+                <p class="score">Score: <?php echo $results[1]['score']; ?></p>
             </div>
         <?php endif; ?>
 
         <?php if (isset($results[2])): ?>
-            <div class="pedestal third">
-                <h2>3rd Place</h2>
-                <p><?php echo $results[2]['user']['name']; ?></p>
-                <p>Score: <?php echo $results[2]['score']; ?></p>
-                <div>
-                    <?php foreach ($results[2]['dice'] as $roll): ?>
-                        <img src="http://193.2.139.22/dice/dice<?php echo $roll; ?>.gif" alt="Dice <?php echo $roll; ?>">
-                    <?php endforeach; ?>
-                </div>
+            <div class="player-position third-place">
+                <img src="http://193.2.139.22/dice/dice3.gif" alt="Third Place">
+                <p class="name"><?php echo $results[2]['user']['name']; ?></p>
+                <p class="score">Score: <?php echo $results[2]['score']; ?></p>
             </div>
+        <?php endif; ?>
+    </div>
+
+    <div class="congratulations">
+        <?php if ($isTie): ?>
+            <p>🎉 Congratulations to both <?php echo $results[0]['user']['name']; ?> and <?php echo $results[1]['user']['name']; ?> for tying with the highest score of <?php echo $results[0]['score']; ?>! 🎉</p>
+        <?php else: ?>
+            <p>🎉 Congratulations to <?php echo $results[0]['user']['name']; ?> for winning with the highest score of <?php echo $results[0]['score']; ?>! 🎉</p>
         <?php endif; ?>
     </div>
 

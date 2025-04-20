@@ -20,93 +20,13 @@ $_SESSION['results'] = $results;
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Online Dice Game</title>
     <link href="style.css" rel="stylesheet" type="text/css" media="all"/>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2b2b2b;
-            color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
-            color: #ff4500;
-            margin: 20px 0;
-            font-size: 36px;
-        }
-
-        .dice-area {
-            width: 100%;
-            height: 300px;
-            background-color: #444;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .dice {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            margin: 10px;
-            background-color: #fff;
-            border: 2px solid #ffd700;
-            border-radius: 5px;
-            background-size: cover;
-        }
-
-        .players-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-        }
-
-        .player-card {
-            background-color: #333333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            width: 200px;
-        }
-
-        .player-card h2 {
-            color: #ff4500;
-            margin-bottom: 10px;
-        }
-
-        .player-card p {
-            margin: 5px 0;
-        }
-
-        .player-card button {
-            background-color: #ff4500;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .player-card button:hover {
-            background-color: #e63900;
-        }
-
-        .player-card button:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-        }
-    </style>
+    <link href="gamestyles.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+</head>
 </head>
 <body>
     <h1>Online Dice</h1>
@@ -135,8 +55,15 @@ $_SESSION['results'] = $results;
         ];
 
         let results = <?php echo json_encode($results); ?>;
+        let isRolling = false; // Global flag to track if rolling is in progress
 
         function rollDice(playerIndex) {
+            if (isRolling) {
+                alert("Another player is rolling. Please wait.");
+                return;
+            }
+
+            isRolling = true; // Set the flag to true
             const playerCard = document.getElementById(`player-${playerIndex}`);
             const rollsLeftElement = document.getElementById(`rollsLeft-${playerIndex}`);
             const scoreElement = document.getElementById(`score-${playerIndex}`);
@@ -189,6 +116,8 @@ $_SESSION['results'] = $results;
                 if (results.every(player => player.rollsLeft === 0)) {
                     finishGame();
                 }
+
+                isRolling = false; // Reset the flag after rolling is complete
             }, 2000); // 2-second delay for animation
         }
 
