@@ -1,4 +1,4 @@
-# Kockice - PHP Igrica metanja kock za tri igralce
+# 🎲Kockice🎲 - PHP Igrica metanja kock za tri igralce
 
 To je preprosta PHP igra metanja kock, zasnovana za tri igralce. Igralci si izmenično mečejo kocke, igralec z najvišjim skupnim rezultatom pa zmaga.
 
