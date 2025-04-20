@@ -26,7 +26,7 @@ To je preprosta PHP igra metanja kock, zasnovana za tri igralce. Igralci si izme
 
 ### Kako igrati
 
-- Vsak igralec v svojem čenu vrže kocke.
+- Vsak igralec v svojem krogu vrže kocke.
 - Igra samodejno izračuna in prikaže skupni rezultat vsakega igralca.
 - Igralec z najvišjim skupnim rezultatom zmaga v krogu.
 
